@@ -2,12 +2,18 @@ pipeline {
     agent { label 'vm1-agent' }
 
     stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Deploy to RKE2 Kubernetes') {
             steps {
                 sh '''
-                  whoami
-                  hostname
-                  kubectl get nodes
+                  pwd
+                  ls
+                  ls k8s
                   kubectl apply -f k8s/deployment.yaml
                   kubectl apply -f k8s/service.yaml
                 '''
