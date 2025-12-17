@@ -1,16 +1,13 @@
 pipeline {
-    agent any
+    agent { label 'vm1-agent' }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Deploy to RKE2') {
+        stage('Deploy to RKE2 Kubernetes') {
             steps {
                 sh '''
+                  whoami
+                  hostname
+                  kubectl get nodes
                   kubectl apply -f k8s/deployment.yaml
                   kubectl apply -f k8s/service.yaml
                 '''
@@ -20,7 +17,7 @@ pipeline {
 
     post {
         success {
-            echo 'Notes Microservice deployed successfully'
+            echo 'Notes Microservice deployed successfully via CloudBees CI'
         }
     }
 }
